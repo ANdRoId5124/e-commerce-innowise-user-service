@@ -1,0 +1,1 @@
+CREATE INDEX inx_payment_card_user_id ON payment_cards(user_id)
