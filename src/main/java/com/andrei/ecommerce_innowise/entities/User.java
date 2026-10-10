@@ -1,5 +1,6 @@
 package com.andrei.ecommerce_innowise.entities;
 
+import com.andrei.ecommerce_innowise.audit.Auditable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

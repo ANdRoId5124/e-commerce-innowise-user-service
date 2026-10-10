@@ -1,5 +1,6 @@
 package com.andrei.ecommerce_innowise.entities;
 
+import com.andrei.ecommerce_innowise.audit.Auditable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "payment_cards")
-public class PaymentCard {
+public class PaymentCard extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
