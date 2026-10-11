@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/002-create-indexes.sql
   - include:
       file: db/changelog/003-add-audit_columns.sql
+  - include:
+      file: db/changelog/004-add-active-column-to-payment-cards.sql
