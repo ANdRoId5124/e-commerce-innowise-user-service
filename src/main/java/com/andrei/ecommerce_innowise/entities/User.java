@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -39,4 +40,44 @@ public class User extends Auditable {
   @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
   private List<PaymentCard> cards = new ArrayList<>();
 
+  public User(String name, String surname, LocalDate birthDate, String email, boolean active) {
+    this.name = name;
+    this.surname = surname;
+    this.birthDate = birthDate;
+    this.email = email;
+    this.active = active;
+  }
+
+  public User() {
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", surname='" + surname + '\'' +
+        ", birthDate=" + birthDate +
+        ", email='" + email + '\'' +
+        ", active=" + active +
+        ", cards=" + cards +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return active == user.active && Objects.equals(id, user.id) && Objects.equals(
+        name, user.name) && Objects.equals(surname, user.surname)
+        && Objects.equals(birthDate, user.birthDate) && Objects.equals(email,
+        user.email) && Objects.equals(cards, user.cards);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, surname, birthDate, email, active, cards);
+  }
 }
