@@ -54,4 +54,14 @@ public class PaymentCardService {
         PageRequest.of(pageNumber, pageSize)).getContent();
   }
 
+  public PaymentCard activateCard(PaymentCard paymentCard){
+    paymentCard.setActive(true);
+    return cardRepository.save(paymentCard);
+  }
+
+  public PaymentCard deactivateCard(PaymentCard paymentCard){
+    paymentCard.setActive(false);
+    return paymentCard;
+  }
+
 }
