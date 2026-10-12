@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/003-add-audit_columns.sql
   - include:
       file: db/changelog/004-add-active-column-to-payment-cards.sql
+  - include:
+      file: db/changelog/005-create-trigger-for-max-number-of-cards.sql
