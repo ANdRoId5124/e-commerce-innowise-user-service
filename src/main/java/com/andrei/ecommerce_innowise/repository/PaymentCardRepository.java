@@ -14,4 +14,7 @@ public interface PaymentCardRepository extends JpaRepository<PaymentCard, Long>,
 
   long getCardsAmountByUserId(@Param("userId") Long userId);
 
+  @NativeQuery("SELECT * FROM payment_cards WHERE user_id = :user_id")
+  List<PaymentCard> getAllPaymentCardsByUserId(@Param("user_id") Long userId);
+
 }
