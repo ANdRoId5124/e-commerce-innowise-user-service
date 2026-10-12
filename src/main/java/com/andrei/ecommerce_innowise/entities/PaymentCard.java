@@ -18,7 +18,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "payment_cards")
-
+@NamedQuery(
+    name = "getCardsAmountByUserId",
+    query = "SELECT COUNT(pc) FROM PaymentCard pc WHERE pc.user.id = :userId"
+)
 public class PaymentCard extends Auditable {
 
   @Id

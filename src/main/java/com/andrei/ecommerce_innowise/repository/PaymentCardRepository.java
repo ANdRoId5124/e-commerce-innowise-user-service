@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface PaymentCardRepository extends JpaRepository<PaymentCard, Long>,
     JpaSpecificationExecutor<PaymentCard> {
 
+  long getCardsAmountByUserId(@Param("userId") Long userId);
 
 }

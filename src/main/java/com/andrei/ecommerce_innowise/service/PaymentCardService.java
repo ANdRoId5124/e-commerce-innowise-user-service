@@ -11,9 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentCardService {
   private final PaymentCardRepository cardRepository;
+  final static int MAX_CARDS_AMOUNT = 5;
 
   public PaymentCardService(PaymentCardRepository cardRepository) {
     this.cardRepository = cardRepository;
+  }
+
+  public PaymentCard createCard(PaymentCard card, Long userId){
+    if( cardRepository.getCardsAmountByUserId(userId) >= MAX_CARDS_AMOUNT){
+      throw new RuntimeException("Too many cards");
+    }
+    return cardRepository.save(card);
   }
 
   public List<PaymentCard> fetchAll(
