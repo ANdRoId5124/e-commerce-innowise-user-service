@@ -17,6 +17,21 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
+  public User createUser(User user){
+    return userRepository.save(user);
+  }
+
+  public User updateUser(User user){
+    return userRepository.save(user);
+  }
+
+  public User getUserById(Long id){
+    return userRepository
+        .findById(id)
+        .orElseThrow(() ->
+            new EntityNotFoundException("User not found: " + id));
+  }
+
   public List<User> getAllPaginatedAndFilteredUsers(
       int pageNumber,
       int pageSize,
