@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
     NullValuePropertyMappingStrategy.IGNORE)
 public interface PaymentCardMapper {
 
-  PaymentCardMapper Instance = Mappers.getMapper(PaymentCard.class);
+  PaymentCardMapper Instance = Mappers.getMapper(PaymentCardMapper.class);
 
   PaymentCard paymentCardDtoToPaymentCard(PaymentCardDto paymentCardDto);
 
