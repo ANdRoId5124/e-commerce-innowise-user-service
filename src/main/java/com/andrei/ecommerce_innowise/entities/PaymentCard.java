@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -18,10 +17,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "payment_cards")
-@NamedQuery(
-    name = "getCardsAmountByUserId",
-    query = "SELECT COUNT(pc) FROM PaymentCard pc WHERE pc.user.id = :userId"
-)
 public class PaymentCard extends Auditable {
 
   @Id
