@@ -1,6 +1,8 @@
 package com.andrei.ecommerce_innowise.service;
 
+import com.andrei.ecommerce_innowise.DTO.PaymentCardDto;
 import com.andrei.ecommerce_innowise.entities.PaymentCard;
+import com.andrei.ecommerce_innowise.mappers.PaymentCardMapper;
 import com.andrei.ecommerce_innowise.repository.PaymentCardRepository;
 import com.andrei.ecommerce_innowise.repository.UserRepository;
 import com.andrei.ecommerce_innowise.specification.PaymentCardSpecification;
@@ -8,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentCardService {
@@ -27,8 +30,17 @@ public class PaymentCardService {
     return cardRepository.save(card);
   }
 
-  public PaymentCard updateCard(PaymentCard card){
-    return cardRepository.save(card);
+  @Transactional
+  public PaymentCard updateCard(PaymentCardDto cardDto, Long cardId){
+    PaymentCard cardForUpdate = getCardById(cardId);
+    return cardRepository.save(PaymentCardMapper
+        .Instance
+        .updatePaymentCardFromPaymentCardDto(cardDto, cardForUpdate));
+  }
+
+  @Transactional
+  public void deleteCard(Long cardId){
+    cardRepository.deleteById(cardId);
   }
 
   public PaymentCard getCardById(Long id){

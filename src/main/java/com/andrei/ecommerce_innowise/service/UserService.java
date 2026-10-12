@@ -1,12 +1,15 @@
 package com.andrei.ecommerce_innowise.service;
 
+import com.andrei.ecommerce_innowise.DTO.UserDto;
 import com.andrei.ecommerce_innowise.entities.User;
+import com.andrei.ecommerce_innowise.mappers.UserMapper;
 import com.andrei.ecommerce_innowise.repository.UserRepository;
 import com.andrei.ecommerce_innowise.specification.UserSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -21,8 +24,15 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  public User updateUser(User user){
-    return userRepository.save(user);
+  @Transactional
+  public User updateUser(UserDto userDto, Long userId){
+    User userForUpdate =  getUserById(userId);
+    return userRepository.save(UserMapper.Instance.updateUserFromUserDto(userDto, userForUpdate));
+  }
+
+  @Transactional
+  public void deleteUser(Long userId){
+    userRepository.deleteById(userId);
   }
 
   public User getUserById(Long id){
