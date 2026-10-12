@@ -24,6 +24,16 @@ public class PaymentCardService {
     return cardRepository.save(card);
   }
 
+  public PaymentCard updateCard(PaymentCard card){
+    return cardRepository.save(card);
+  }
+
+  public PaymentCard getCardById(Long id){
+    return cardRepository.findById(id)
+        .orElseThrow(() ->
+            new EntityNotFoundException("Card not found: " + id));
+  }
+
   public List<PaymentCard> fetchAll(
       int pageNumber,
       int pageSize,
