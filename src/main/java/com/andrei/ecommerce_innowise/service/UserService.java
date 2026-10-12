@@ -41,4 +41,14 @@ public class UserService {
         PageRequest.of(pageNumber, pageSize)).
         getContent();
   }
+
+  public User activateUser(User user){
+    user.setActive(true);
+    return userRepository.save(user);
+  }
+
+  public User deactivateUser(User user){
+    user.setActive(false);
+    return userRepository.save(user);
+  }
 }
