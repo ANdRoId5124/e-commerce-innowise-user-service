@@ -1,12 +1,15 @@
 package com.andrei.ecommerce_innowise.service;
 
-import com.andrei.ecommerce_innowise.DTO.PaymentCardDto;
+import com.andrei.ecommerce_innowise.DTO.request.payment_card.CreatePaymentCardRequest;
+import com.andrei.ecommerce_innowise.DTO.request.payment_card.UpdatePaymentCardRequest;
+import com.andrei.ecommerce_innowise.DTO.response.payment_card.PaymentCardResponse;
 import com.andrei.ecommerce_innowise.entities.PaymentCard;
+import com.andrei.ecommerce_innowise.exception.payment_card.PaymentCardNotFoundException;
+import com.andrei.ecommerce_innowise.exception.user.UserNotFoundException;
 import com.andrei.ecommerce_innowise.mappers.PaymentCardMapper;
 import com.andrei.ecommerce_innowise.repository.PaymentCardRepository;
 import com.andrei.ecommerce_innowise.repository.UserRepository;
 import com.andrei.ecommerce_innowise.specification.PaymentCardSpecification;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,26 +19,46 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentCardService {
   private final PaymentCardRepository cardRepository;
   private final UserRepository userRepository;
-  final static int MAX_CARDS_AMOUNT = 5;
+  private final static int MAX_CARDS_AMOUNT = 5;
+  private final static boolean ACTIVE = true;
+  private final static boolean NOT_ACTIVE = false;
 
   public PaymentCardService(PaymentCardRepository cardRepository, UserRepository userRepository) {
     this.cardRepository = cardRepository;
     this.userRepository = userRepository;
   }
 
-  public PaymentCard createCard(PaymentCard card, Long userId){
+  public PaymentCardResponse createCard(CreatePaymentCardRequest cardDto, Long userId){
     if( cardRepository.getCardsAmountByUserId(userId) >= MAX_CARDS_AMOUNT){
       throw new RuntimeException("Too many cards");
     }
-    return cardRepository.save(card);
+    PaymentCard createdPaymentCard = PaymentCardMapper
+        .Instance
+        .paymentCardDtoToPaymentCard(cardDto);
+
+    createdPaymentCard.setActive(ACTIVE);
+
+    return PaymentCardMapper
+        .Instance
+        .paymentCardToPaymentCardResponse(createdPaymentCard);
   }
 
   @Transactional
-  public PaymentCard updateCard(PaymentCardDto cardDto, Long cardId){
-    PaymentCard cardForUpdate = getCardById(cardId);
-    return cardRepository.save(PaymentCardMapper
+  public PaymentCardResponse updateCard(
+      UpdatePaymentCardRequest updatePaymentCardRequest,
+      Long cardId
+  ){
+    PaymentCard updatedCard = cardRepository.save(
+        PaymentCardMapper
+            .Instance
+            .updatePaymentCardFromPaymentCardUpdateRequest(
+                updatePaymentCardRequest,
+                getCardById(cardId)
+            )
+    );
+    return PaymentCardMapper
         .Instance
-        .updatePaymentCardFromPaymentCardDto(cardDto, cardForUpdate));
+        .paymentCardToPaymentCardResponse(updatedCard);
   }
 
   @Transactional
@@ -46,12 +69,12 @@ public class PaymentCardService {
   public PaymentCard getCardById(Long id){
     return cardRepository.findById(id)
         .orElseThrow(() ->
-            new EntityNotFoundException("Card not found: " + id));
+            new PaymentCardNotFoundException("Card not found: " + id));
   }
 
   public List<PaymentCard> getAllCardsByUserId(Long userId){
     if(!userRepository.existsById(userId)){
-      throw new EntityNotFoundException("Not found User by this id: " + userId);
+      throw new UserNotFoundException("User not found: " + userId);
     }
     return cardRepository.getAllPaymentCardsByUserId(userId);
   }
@@ -66,14 +89,14 @@ public class PaymentCardService {
         PageRequest.of(pageNumber, pageSize)).getContent();
   }
 
-  public PaymentCard activateCard(PaymentCard paymentCard){
-    paymentCard.setActive(true);
-    return cardRepository.save(paymentCard);
+  public void activateCard(PaymentCard paymentCard){
+    paymentCard.setActive(ACTIVE);
+    cardRepository.save(paymentCard);
   }
 
-  public PaymentCard deactivateCard(PaymentCard paymentCard){
-    paymentCard.setActive(false);
-    return paymentCard;
+  public void deactivateCard(PaymentCard paymentCard){
+    paymentCard.setActive(NOT_ACTIVE);
+    cardRepository.save(paymentCard);
   }
 
 }
