@@ -1,6 +1,8 @@
 package com.andrei.ecommerce_innowise.mappers;
 
-import com.andrei.ecommerce_innowise.DTO.UserDto;
+import com.andrei.ecommerce_innowise.DTO.request.user.CreateUserRequest;
+import com.andrei.ecommerce_innowise.DTO.request.user.UpdateUserRequest;
+import com.andrei.ecommerce_innowise.DTO.response.user.UserResponse;
 import com.andrei.ecommerce_innowise.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -12,10 +14,13 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
   UserMapper Instance = Mappers.getMapper(UserMapper.class);
 
-  UserDto userToUserDTO(User user);
+  User userDTOToUser(CreateUserRequest userDto);
 
-  User userDTOToUser(UserDto userDto);
+  UserResponse userToUserResponseDto(User user);
 
-  User updateUserFromUserDto(UserDto userDto, @MappingTarget User user);
+  User updateUserFromUserUpdateRequest(
+      UpdateUserRequest userUpdateRequest,
+      @MappingTarget User user)
+      ;
 
 }

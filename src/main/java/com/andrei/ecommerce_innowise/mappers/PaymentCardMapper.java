@@ -1,6 +1,8 @@
 package com.andrei.ecommerce_innowise.mappers;
 
-import com.andrei.ecommerce_innowise.DTO.PaymentCardDto;
+import com.andrei.ecommerce_innowise.DTO.request.payment_card.CreatePaymentCardRequest;
+import com.andrei.ecommerce_innowise.DTO.request.payment_card.UpdatePaymentCardRequest;
+import com.andrei.ecommerce_innowise.DTO.response.payment_card.PaymentCardResponse;
 import com.andrei.ecommerce_innowise.entities.PaymentCard;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,11 +15,12 @@ public interface PaymentCardMapper {
 
   PaymentCardMapper Instance = Mappers.getMapper(PaymentCardMapper.class);
 
-  PaymentCard paymentCardDtoToPaymentCard(PaymentCardDto paymentCardDto);
+  PaymentCard paymentCardDtoToPaymentCard(CreatePaymentCardRequest paymentCardDto);
 
-  PaymentCardDto paymentCardToPaymentDto(PaymentCard paymentCard);
+  PaymentCardResponse paymentCardToPaymentCardResponse(PaymentCard paymentCard);
 
-  PaymentCard updatePaymentCardFromPaymentCardDto(
-      PaymentCardDto paymentCardDto,
-      @MappingTarget PaymentCard paymentCard);
+  PaymentCard updatePaymentCardFromPaymentCardUpdateRequest(
+      UpdatePaymentCardRequest paymentCardUpdateRequest,
+      @MappingTarget PaymentCard paymentCard
+  );
 }
