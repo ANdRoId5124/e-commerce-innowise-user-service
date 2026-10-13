@@ -1,19 +1,15 @@
-package com.andrei.ecommerce_innowise.DTO;
+package com.andrei.ecommerce_innowise.DTO.request.payment_card;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
-public class PaymentCardDto {
+public class UpdatePaymentCardRequest {
 
-  @NotBlank(message = "Payment card number is required")
   @CreditCardNumber(message = "Payment card number is invalid")
   private String number;
 
-  @NotBlank(message = "Holder is required")
   @Size(min = 2, message = "Holder cannot be less than two characters")
   @Pattern(
       regexp = "^\\S(?:.*\\S)?$",
@@ -21,7 +17,6 @@ public class PaymentCardDto {
   )
   private String holder;
 
-  @NotNull(message = "The expiration date is required")
   private LocalDate expirationDate;
 
   public String getNumber() {
