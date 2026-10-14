@@ -31,4 +31,35 @@ public class UpdateUserRequest {
   @Size(max = 200, message = "Max value of the email characters is 200")
   private String email;
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getSurname() {
+    return surname;
+  }
+
+  public void setSurname(String surname) {
+    this.surname = surname;
+  }
+
+  public LocalDate getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(LocalDate birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }
