@@ -4,11 +4,11 @@ import com.andrei.ecommerce_innowise.DTO.request.payment_card.CreatePaymentCardR
 import com.andrei.ecommerce_innowise.DTO.request.payment_card.UpdatePaymentCardRequest;
 import com.andrei.ecommerce_innowise.DTO.response.payment_card.PaymentCardResponse;
 import com.andrei.ecommerce_innowise.entities.PaymentCard;
+import com.andrei.ecommerce_innowise.entities.User;
 import com.andrei.ecommerce_innowise.exception.payment_card.PaymentCardNotFoundException;
-import com.andrei.ecommerce_innowise.exception.user.UserNotFoundException;
+import com.andrei.ecommerce_innowise.exception.payment_card.TooManyPaymentCardsException;
 import com.andrei.ecommerce_innowise.mappers.PaymentCardMapper;
 import com.andrei.ecommerce_innowise.repository.PaymentCardRepository;
-import com.andrei.ecommerce_innowise.repository.UserRepository;
 import com.andrei.ecommerce_innowise.specification.PaymentCardSpecification;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
@@ -18,29 +18,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PaymentCardService {
   private final PaymentCardRepository cardRepository;
-  private final UserRepository userRepository;
+  private final UserService userService;
   private final static int MAX_CARDS_AMOUNT = 5;
   private final static boolean ACTIVE = true;
   private final static boolean NOT_ACTIVE = false;
 
-  public PaymentCardService(PaymentCardRepository cardRepository, UserRepository userRepository) {
+  public PaymentCardService(PaymentCardRepository cardRepository, UserService userService) {
     this.cardRepository = cardRepository;
-    this.userRepository = userRepository;
+    this.userService = userService;
   }
 
   public PaymentCardResponse createCard(CreatePaymentCardRequest cardDto, Long userId){
     if( cardRepository.getCardsAmountByUserId(userId) >= MAX_CARDS_AMOUNT){
-      throw new RuntimeException("Too many cards");
+      throw new TooManyPaymentCardsException("Too many cards");
     }
     PaymentCard createdPaymentCard = PaymentCardMapper
         .Instance
         .paymentCardDtoToPaymentCard(cardDto);
 
+    createdPaymentCard.setUser(userService.getUserById(userId));
     createdPaymentCard.setActive(ACTIVE);
 
     return PaymentCardMapper
         .Instance
-        .paymentCardToPaymentCardResponse(createdPaymentCard);
+        .paymentCardToPaymentCardResponse(
+            cardRepository.
+                save(createdPaymentCard)
+        );
   }
 
   @Transactional
@@ -73,10 +77,8 @@ public class PaymentCardService {
   }
 
   public List<PaymentCard> getAllCardsByUserId(Long userId){
-    if(!userRepository.existsById(userId)){
-      throw new UserNotFoundException("User not found: " + userId);
-    }
-    return cardRepository.getAllPaymentCardsByUserId(userId);
+    User user = userService.getUserById(userId);
+    return cardRepository.getAllPaymentCardsByUserId(user.getId());
   }
 
   public List<PaymentCard> fetchAll(
