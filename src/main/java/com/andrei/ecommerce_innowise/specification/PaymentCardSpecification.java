@@ -35,10 +35,10 @@ public class PaymentCardSpecification {
                 get(USER_FIELD_NAME_FOR_SURNAME), userSurname);
   }
 
-  public static Specification<PaymentCard> withFilters(String userName, String Surname){
+  public static Specification<PaymentCard> withFilters(String userName, String surname){
     return Specification.allOf(
         hasCardUserName(userName),
-        hasCardUserSurname(userName));
+        hasCardUserSurname(surname));
   }
 
 }
