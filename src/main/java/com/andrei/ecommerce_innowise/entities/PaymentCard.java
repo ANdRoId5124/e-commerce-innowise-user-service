@@ -60,6 +60,14 @@ public class PaymentCard extends Auditable {
   public PaymentCard() {
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public String getNumber() {
     return number;
   }
@@ -108,7 +116,6 @@ public class PaymentCard extends Auditable {
         ", holder='" + holder + '\'' +
         ", expirationDate=" + expirationDate +
         ", active=" + active +
-        ", user=" + user +
         '}';
   }
 

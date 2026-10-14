@@ -4,6 +4,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 
 import com.andrei.ecommerce_innowise.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +42,7 @@ public class User extends Auditable {
 
   @OneToMany(mappedBy = "user",
       cascade = {REMOVE, PERSIST})
+  @JsonIgnore
   private List<PaymentCard> cards = new ArrayList<>();
 
   public User(String name, String surname, LocalDate birthDate, String email, boolean active) {
