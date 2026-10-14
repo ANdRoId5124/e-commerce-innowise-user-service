@@ -1,6 +1,7 @@
 package com.andrei.ecommerce_innowise.exception;
 
 import com.andrei.ecommerce_innowise.exception.payment_card.PaymentCardNotFoundException;
+import com.andrei.ecommerce_innowise.exception.payment_card.TooManyPaymentCardsException;
 import com.andrei.ecommerce_innowise.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,19 @@ public class GlobalExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.NOT_FOUND)
         .body(ex.getMessage());
+  }
+
+  @ResponseStatus(value = HttpStatus.CONFLICT)
+  @ExceptionHandler(
+      value = TooManyPaymentCardsException.class
+  )
+  public ResponseEntity<String> handleTooManyCardsException(
+      TooManyPaymentCardsException ex
+  ){
+    return ResponseEntity
+        .status(HttpStatus.CONFLICT)
+        .body(ex.getMessage()
+        );
   }
 
 }
