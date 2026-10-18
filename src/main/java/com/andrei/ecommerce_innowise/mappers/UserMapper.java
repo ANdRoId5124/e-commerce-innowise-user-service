@@ -11,9 +11,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-  UserMapper Instance = Mappers.getMapper(UserMapper.class);
 
   User userDTOToUser(CreateUserRequest userDto);
 

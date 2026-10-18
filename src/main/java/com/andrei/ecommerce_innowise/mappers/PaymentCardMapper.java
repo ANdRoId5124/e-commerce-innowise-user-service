@@ -10,10 +10,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PaymentCardMapper {
-
-  PaymentCardMapper Instance = Mappers.getMapper(PaymentCardMapper.class);
 
   PaymentCard paymentCardDtoToPaymentCard(CreatePaymentCardRequest paymentCardDto);
 
