@@ -5,8 +5,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreatePaymentCardRequest {
 
   @NotBlank(message = "Payment card number is required")
@@ -23,28 +33,4 @@ public class CreatePaymentCardRequest {
 
   @NotNull(message = "The expiration date is required")
   private LocalDate expirationDate;
-
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public String getHolder() {
-    return holder;
-  }
-
-  public void setHolder(String holder) {
-    this.holder = holder;
-  }
-
-  public LocalDate getExpirationDate() {
-    return expirationDate;
-  }
-
-  public void setExpirationDate(LocalDate expirationDate) {
-    this.expirationDate = expirationDate;
-  }
 }

@@ -1,6 +1,7 @@
 package com.andrei.ecommerce_innowise.entities;
 
 import com.andrei.ecommerce_innowise.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,9 +13,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Builder
 @Entity
 @Table(name = "payment_cards")
 public class PaymentCard extends Auditable {
@@ -46,93 +57,7 @@ public class PaymentCard extends Auditable {
       nullable = false,
       foreignKey = @ForeignKey(name = "fk_payment_cards_user")
   )
+  @EqualsAndHashCode.Exclude
+  @JsonIgnore
   private User user;
-
-  public PaymentCard(String number, String holder, LocalDate expirationDate, boolean active,
-      User user) {
-    this.number = number;
-    this.holder = holder;
-    this.expirationDate = expirationDate;
-    this.active = active;
-    this.user = user;
-  }
-
-  public PaymentCard() {
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public String getHolder() {
-    return holder;
-  }
-
-  public void setHolder(String holder) {
-    this.holder = holder;
-  }
-
-  public LocalDate getExpirationDate() {
-    return expirationDate;
-  }
-
-  public void setExpirationDate(LocalDate expirationDate) {
-    this.expirationDate = expirationDate;
-  }
-
-  public boolean isActive() {
-    return active;
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  @Override
-  public String toString() {
-    return "PaymentCard{" +
-        "id=" + id +
-        ", number='" + number + '\'' +
-        ", holder='" + holder + '\'' +
-        ", expirationDate=" + expirationDate +
-        ", active=" + active +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    PaymentCard that = (PaymentCard) o;
-    return active == that.active && Objects.equals(id, that.id) && Objects.equals(
-        number, that.number) && Objects.equals(holder, that.holder)
-        && Objects.equals(expirationDate, that.expirationDate) && Objects.equals(
-        user, that.user);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, number, holder, expirationDate, active, user);
-  }
 }
