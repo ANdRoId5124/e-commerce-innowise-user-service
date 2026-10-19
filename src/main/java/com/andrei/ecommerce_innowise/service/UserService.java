@@ -36,8 +36,6 @@ public class UserService {
       evict = {@CacheEvict(value = "usersPage", allEntries = true)}
   )
 
-//  Handle IllegalArgumentException
-
   public UserResponse createUser(CreateUserRequest createUserRequest){
     if(userRepository.findUserByEmail(createUserRequest.getEmail()).isPresent()){
       throw new IllegalArgumentException("Email is taken");
