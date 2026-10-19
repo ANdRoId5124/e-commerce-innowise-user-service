@@ -94,7 +94,8 @@ public class PaymentCardService {
       }
   )
   public void deleteCard(Long cardId){
-    cardRepository.deleteById(cardId);
+    PaymentCard cardForDelete = getCardById(cardId);
+    cardRepository.delete(cardForDelete);
   }
 
   @Cacheable(value = "cardById", key = "#id")
