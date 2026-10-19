@@ -38,4 +38,16 @@ public class GlobalExceptionHandler {
         );
   }
 
+  @ResponseStatus(value = HttpStatus.CONFLICT)
+  @ExceptionHandler(
+      value = IllegalArgumentException.class
+  )
+  public ResponseEntity<String> handleIllegalArgumentException(
+      IllegalArgumentException exception
+  ){
+    return ResponseEntity
+        .status(HttpStatus.CONFLICT)
+        .body(exception.getMessage());
+  }
+
 }
