@@ -1,7 +1,6 @@
 services:
   app:
     image: ecommerce-innowise-user-service
-    build: .
     container_name: ecommerce-innowise-user-service
     ports:
       - "${APP_PORT:-8080}:8080"
