@@ -66,6 +66,11 @@ jobs:
     - name: SonarQube Cloud analysis
       env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DB_URI: ${{ vars.DB_URI }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SPRING_DATA_REDIS_HOST: localhost
+          SPRING_DATA_REDIS_PORT: "6379"
       run: >
             mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
